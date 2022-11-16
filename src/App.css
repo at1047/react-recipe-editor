@@ -1,38 +1,91 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  color: #565656;
+  margin: 20px;
+}
+
+h3 {
+  color: #565656;
+  margin: 20px 0;
+}
+
+body {
+  color: #434343;
+}
+
+input {
+  margin: 10px;
+  padding-left: 3px;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  display:flex;
+  flex-direction: column;
+}
+
+.input-wrapper {
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.name-row {
+  width: 100%;
+  display:flex;
+  align-items: center;
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.name-wrapper {
+  margin: 0 auto;
+}
+
+.button-row {
+  width: 100%;
+  align-items: center;
+  display:flex;
+}
+
+.button-wrapper {
+  margin: 10px auto;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 302px;
+}
+
+.button-row {
+  width: 100%;
+  align-items: center;
+  display:flex;
+}
+
+button {
+  display: inline-block;
+  color: #434343;
+}
+
+
+
+.payload-wrapper {
+  width: 500px;
+  margin: auto 0px;
+}
+
+.notes-input {
+  width: calc(100% - 4px);
+  margin: 10px 0;
+}
+
+#recipe-name {
+  margin-right: 0;
+}
+
+.response-text {
+  color: #565656;
+  font-size: small;
+  margin: 10px 0;
 }
