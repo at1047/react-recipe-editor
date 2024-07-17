@@ -68,7 +68,9 @@ button {
   color: #434343;
 }
 
-
+pre {
+  white-space: pre-wrap;
+}
 
 .payload-wrapper {
   width: 500px;

@@ -2,6 +2,8 @@ import React , { useState, useEffect } from 'react';
 import './App.css';
 import {v4 as uuidv4} from 'uuid';
 import axios from 'axios';
+import IngredientList from './components/IngredientList/ingredientList';
+
 
 function App() {
 
@@ -10,7 +12,7 @@ function App() {
     ingredients: _Ingredient[],
     notes: string
   }
-    
+
   interface Ingredient {
       id: string,
       name: string,
@@ -55,7 +57,7 @@ function App() {
     setIngredientFields(_ingredientFields)
   }
 
-  
+
 
   const updateRecipe = () => {
     const _name = name || ''
@@ -70,14 +72,14 @@ function App() {
     setRecipe(recipe);
   }
 
- 
+
   const clearFields = () => {
     const _recipe: Recipe = {
       name: '',
       ingredients: [],
       notes: ''
     }
-      
+
     const _ingredientFields: Ingredient[] = [];
 
     setName('');
@@ -91,7 +93,7 @@ function App() {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
+
     // const recipe: Recipe = {
     //   name: "test",
     //   ingredients: [],
@@ -106,9 +108,9 @@ function App() {
     } catch (e) {
       setResponse(`error: ${e}`)
     }
-    
+
     // console.table(ingredientFields)
-    
+
   }
 
   const addIngredient = (e: React.MouseEvent) => {
@@ -139,19 +141,9 @@ function App() {
               <input id='recipe-name' name='name' placeholder='Name' onChange={(e) => handleNameChange(e)} />
             </div>
           </div>
-          
-          
-          {ingredientFields.map((input) => {
-            return (
-              <div key={input.id}>
-                <input name='name' placeholder='Ingredient' onChange={(e) => handleFormChange(input.id, e)} />
-                <input name='quantity' placeholder='Quantity' type={'number'} step={0.25} onChange={(e) => handleFormChange(input.id, e)} />
-                <input name='unit' placeholder='Unit' onChange={(e) => handleFormChange(input.id, e)} />
-                <button onClick={() => removeIngredient(input.id)}>Remove</button>
-              </div>
-              
-            )
-          })}
+
+          <IngredientList />
+
           <div className='notes-wrapper'>
             <label htmlFor='notes'>Notes:</label>
             <input id='notes' className='notes-input' name='notes' placeholder='Notes' onChange={(e) => handleNoteChange(e)} />
@@ -163,8 +155,8 @@ function App() {
               <button type='submit'>Submit Query</button>
             </div>
           </div>
-          
-          
+
+
         </div>
       </form>
 
@@ -174,7 +166,7 @@ function App() {
         <h3>Payload Preview</h3>
         <pre style={{textAlign: 'left'}} >{JSON.stringify(recipe, null, 2)}</pre>
         </div>
-      
+
     </div>
   );
 }
