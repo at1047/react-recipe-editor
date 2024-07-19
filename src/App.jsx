@@ -221,7 +221,7 @@ function isInteractiveElement(element) {
 
           <div className='notes-wrapper'>
             <label htmlFor='notes'>Notes:</label>
-            <input id='notes' className='notes-input' name='notes' placeholder='Notes' onChange={(e) => handleNoteChange(e)} />
+            <textarea id='notes' className='notes-input' name='notes' placeholder='Notes' onChange={(e) => handleNoteChange(e)} />
           </div>
 
 

@@ -1,26 +1,44 @@
 * {
   padding: 0;
   margin: 0;
+  color: #E1E1E1
+}
+
+body {
+  background-color: #1A1A1A;
 }
 
 h1 {
-  color: #565656;
+  color: #E1E1E1;
   margin: 20px;
 }
 
 h3 {
-  color: #565656;
+  color: #E1E1E1;
   margin: 20px 0;
 }
 
 body {
-  color: #434343;
+  color: #D1D1D1;
 }
 
 input {
   margin: 10px;
-  padding-left: 3px;
+  padding-left: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  background-color: #2F2F2F;
+  border:none;
+  border-radius: 3px;
+
 }
+
+input:focus{
+    outline: none;
+    box-shadow: none;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+  }
 
 .App {
   align-items: center;
@@ -54,7 +72,7 @@ input {
   display: inline-flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 302px;
+  width: 400px;
 }
 
 .button-row {
@@ -65,7 +83,13 @@ input {
 
 button {
   display: inline-block;
-  color: #434343;
+  color: #E1E1E1;
+  border-radius: 3px;
+  padding: 1px 5px;
+  border: none;
+  background-color: #5762D6;
+  transition: background-color .17s ease,color .17s ease;
+
 }
 
 pre {
@@ -79,8 +103,22 @@ pre {
 
 .notes-input {
   width: calc(100% - 4px);
+  height: 60px;
   margin: 10px 0;
+  padding: 5px;
+  background-color: #2F2F2F;
+  border: none;
+  border-radius: 5px;
 }
+
+
+.notes-input:focus{
+    outline: none;
+    box-shadow: none;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+  }
+
 
 #recipe-name {
   margin-right: 0;
