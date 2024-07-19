@@ -7,51 +7,36 @@ import IngredientList from './components/IngredientList/ingredientList';
 
 function App() {
 
-  interface Recipe {
-    name: string,
-    ingredients: _Ingredient[],
-    notes: string
-  }
-
-  interface Ingredient {
-      id: string,
-      name: string,
-      quantity: number,
-      unit: string
-    }
-
-  interface _Ingredient {
-    name: string,
-    quantity: number,
-    unit: string
-  }
-
-
-  const [ingredientFields, setIngredientFields] = useState<Ingredient[]>([]);
+  const [ingredientFields, setIngredientFields] = useState([{
+      id: uuidv4(),
+      name: 'test',
+      quantity: 0,
+      unit: 'g'
+    }]);
   const [name, setName] = useState('');
-  const [recipe, setRecipe] = useState<Recipe>();
+  const [recipe, setRecipe] = useState();
   const [notes, setNotes] = useState('');
   const [response, setResponse] = useState('');
 
-  const handleFormChange = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFormChange = (id, e) => {
     const index = ingredientFields.findIndex(ingredient => ingredient.id === id)
-    let _ingredientFields = [...ingredientFields] as any
+    let _ingredientFields = [...ingredientFields]
     _ingredientFields[index][e.target.name] = e.target.value
 
     setIngredientFields(_ingredientFields);
   }
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (e) => {
     const name = e.target.value
     setName(name);
   }
 
-  const handleNoteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNoteChange = (e) => {
     const notes = e.target.value
     setNotes(notes);
   }
 
-  const removeIngredient = (id: string) => {
+  const removeIngredient = (id) => {
     let _ingredientFields = [...ingredientFields]
     _ingredientFields = _ingredientFields.filter(ingredient => ingredient.id !== id)
     setIngredientFields(_ingredientFields)
@@ -62,8 +47,8 @@ function App() {
   const updateRecipe = () => {
     const _name = name || ''
     const _notes = notes || ''
-    const _ingredients = ingredientFields.map(i => { return { name: i.name, quantity: parseFloat(i.quantity as any), unit: i.unit } });
-    const recipe: Recipe = {
+    const _ingredients = ingredientFields.map(i => { return { name: i.name, quantity: parseFloat(i.quantity), unit: i.unit } });
+    const recipe = {
       name: _name,
       ingredients: _ingredients,
       notes: _notes
@@ -74,24 +59,24 @@ function App() {
 
 
   const clearFields = () => {
-    const _recipe: Recipe = {
+    const _recipe = {
       name: '',
       ingredients: [],
       notes: ''
     }
 
-    const _ingredientFields: Ingredient[] = [];
+    const _ingredientFields = [];
 
     setName('');
     setIngredientFields(_ingredientFields);
     setNotes('');
     setRecipe(_recipe);
 
-    (document.getElementById("form-wrapper")! as HTMLFormElement).reset();
+    (document.getElementById("form-wrapper")).reset();
 
   }
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitForm = (e) => {
     e.preventDefault()
 
     // const recipe: Recipe = {
@@ -113,9 +98,9 @@ function App() {
 
   }
 
-  const addIngredient = (e: React.MouseEvent) => {
+  const addIngredient = (e) => {
     e.preventDefault()
-    let newIngredient: Ingredient = {
+    let newIngredient = {
       id: uuidv4(),
       name: '',
       quantity: 0,
@@ -142,7 +127,7 @@ function App() {
             </div>
           </div>
 
-          <IngredientList />
+          <IngredientList ingredients={ingredientFields} handleFormChange={handleFormChange} removeIngredient={removeIngredient} />
 
           <div className='notes-wrapper'>
             <label htmlFor='notes'>Notes:</label>
