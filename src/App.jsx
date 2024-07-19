@@ -2,23 +2,39 @@ import React , { useState, useEffect } from 'react';
 import './App.css';
 import {v4 as uuidv4} from 'uuid';
 import axios from 'axios';
-import IngredientList from './components/IngredientList/ingredientList';
+import { IngredientList } from './components/IngredientList/ingredientList';
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCorners,
+} from "@dnd-kit/core";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 
 function App() {
 
-  const [ingredientFields, setIngredientFields] = useState([{
-      id: uuidv4(),
-      name: 'test',
-      quantity: 0,
-      unit: 'g'
-    }]);
+  const [ingredientFields, setIngredientFields] = useState([])
+    // {
+    //   id: uuidv4(),
+    //   name: 'test',
+    //   quantity: 0,
+    //   unit: 'g'
+    // },{
+    //   id: uuidv4(),
+    //   name: 'test2',
+    //   quantity: 0,
+    //   unit: 'g'
+    // }
   const [name, setName] = useState('');
   const [recipe, setRecipe] = useState();
   const [notes, setNotes] = useState('');
   const [response, setResponse] = useState('');
 
   const handleFormChange = (id, e) => {
+    console.log('handling form name update')
     const index = ingredientFields.findIndex(ingredient => ingredient.id === id)
     let _ingredientFields = [...ingredientFields]
     _ingredientFields[index][e.target.name] = e.target.value
@@ -114,6 +130,65 @@ function App() {
     updateRecipe()
   }, [ingredientFields, name, notes]);
 
+  class MyPointerSensor extends PointerSensor {
+  static activators = [
+    {
+      eventName: 'onPointerDown',
+      handler: ({nativeEvent: event}) => {
+        if (
+          !event.isPrimary ||
+          event.button !== 0 ||
+          isInteractiveElement(event.target)
+        ) {
+          return false;
+        }
+
+        return true;
+      },
+    },
+  ];
+}
+
+function isInteractiveElement(element) {
+  const interactiveElements = [
+    'button',
+    'input',
+    'textarea',
+    'select',
+    'option',
+  ];
+
+  if (interactiveElements.includes(element.tagName.toLowerCase())) {
+    return true;
+  }
+
+  return false;
+}
+
+  const sensors = useSensors(
+    useSensor(MyPointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const getTaskPos = (id) => ingredientFields.findIndex((ingredient) => ingredient.id === id);
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id === over.id) return;
+
+    setIngredientFields((ingredientFields) => {
+      const originalPos = getTaskPos(active.id);
+      const newPos = getTaskPos(over.id);
+      console.log(originalPos)
+      console.log(newPos)
+
+      return arrayMove(ingredientFields, originalPos, newPos);
+    });
+  };
+
 
   return (
     <div className="App">
@@ -126,19 +201,27 @@ function App() {
               <input id='recipe-name' name='name' placeholder='Name' onChange={(e) => handleNameChange(e)} />
             </div>
           </div>
-
-          <IngredientList ingredients={ingredientFields} handleFormChange={handleFormChange} removeIngredient={removeIngredient} />
-
-          <div className='notes-wrapper'>
-            <label htmlFor='notes'>Notes:</label>
-            <input id='notes' className='notes-input' name='notes' placeholder='Notes' onChange={(e) => handleNoteChange(e)} />
-          </div>
           <div className='button-row'>
             <div className='button-wrapper'>
               <button onClick={addIngredient}>Add Ingredient</button>
               <button onClick={clearFields}>Clear Fields</button>
               <button type='submit'>Submit Query</button>
             </div>
+          </div>
+
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
+            onDragEnd={handleDragEnd}
+          >
+
+          <IngredientList ingredients={ingredientFields} handleFormChange={handleFormChange} removeIngredient={removeIngredient} />
+
+          </DndContext>
+
+          <div className='notes-wrapper'>
+            <label htmlFor='notes'>Notes:</label>
+            <input id='notes' className='notes-input' name='notes' placeholder='Notes' onChange={(e) => handleNoteChange(e)} />
           </div>
 
 
